@@ -17,6 +17,7 @@
     // Connect to ROS.
     var ros = new ROSLIB.Ros({
       url : 'ws://localhost:9090'
+      //url : 'ws://p99:9090'
     });
 
     // Create the main viewer.
@@ -35,14 +36,19 @@
       ros : ros,
       angularThres : 0.01,
       transThres : 0.01,
-      rate : 10.0
+      rate : 10.0,
+      fixedFrame : '/base'
     });
 
     // Setup the URDF client.
     var urdfClient = new ROS3D.UrdfClient({
       ros : ros,
       tfClient : tfClient,
-      path : 'http://resources.robotwebtools.org/',
+      //path : 'http://resources.robotwebtools.org/',
+      //path : './resources/',
+      //path : './../../../../dev/src/baxter_common/',
+      path : './',
+      //path : 'http://p26:80/',
       rootObject : viewer.scene
     });
   }
