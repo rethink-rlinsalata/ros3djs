@@ -1,0 +1,60 @@
+diff --git a/examples/interactivemarkers.html b/examples/interactivemarkers.html
+index 2c85dd1..889415b 100644
+--- a/examples/interactivemarkers.html
++++ b/examples/interactivemarkers.html
+@@ -15,7 +15,7 @@
+   function init() {
+     // Connect to ROS.
+     var ros = new ROSLIB.Ros({
+-      url : 'ws://localhost:9090'
++      url : 'ws://p26:9090'
+     });
+ 
+     // Create the main viewer.
+@@ -60,4 +60,4 @@
+   </ol>
+   <div id="markers"></div>
+ </body>
+-</html>
+\ No newline at end of file
++</html>
+diff --git a/examples/urdf.html b/examples/urdf.html
+index bbd9fe1..28538b8 100644
+--- a/examples/urdf.html
++++ b/examples/urdf.html
+@@ -15,7 +15,7 @@
+   function init() {
+     // Connect to ROS.
+     var ros = new ROSLIB.Ros({
+-      url : 'ws://localhost:9090'
++      url : 'ws://p99:9090'
+     });
+ 
+     // Create the main viewer.
+@@ -34,14 +34,16 @@
+       ros : ros,
+       angularThres : 0.01,
+       transThres : 0.01,
+-      rate : 10.0
++      rate : 10.0,
++      fixedFrame : '/base'
+     });
+ 
+     // Setup the URDF client.
+     var urdfClient = new ROS3D.UrdfClient({
+       ros : ros,
+       tfClient : tfClient,
+-      path : 'http://resources.robotwebtools.org/',
++      path : './',
++      //path : 'http://p26:80/',
+       rootObject : viewer.scene
+     });
+   }
+@@ -61,4 +63,5 @@
+   </ol>
+   <div id="urdf"></div>
+ </body>
+-</html>
+\ No newline at end of file
++</html>
++
