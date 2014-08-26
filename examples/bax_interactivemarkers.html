@@ -17,7 +17,7 @@
     // Connect to ROS.
     var ros = new ROSLIB.Ros({
       //url : 'ws://localhost:9090'
-      url : 'ws://p26:9090'
+      url : 'ws://' + location.hostname +':9090'
     });
 
     // Create the main viewer.
@@ -25,7 +25,8 @@
       divID : 'markers',
       width : 800,
       height : 600,
-      antialias : true
+      antialias : true,
+      background : '#e2e7ea'
     });
 
     // Add a grid.
@@ -44,8 +45,10 @@
     var urdfClient = new ROS3D.UrdfClient({
       ros : ros,
       tfClient : tfClient,
-      path : 'http://lopako.com/cdn/ros/',
-      //path : './',
+      //path : 'http://lopako.com/cdn/ros/',  //external webserver
+      path : '/ros/',  //on-robot //change if figure out rospack
+      //path : '../../baxter_common/',  //on-robot //change if figure out rospack
+      //path : './',  //local fallback
       rootObject : viewer.scene
     });
 
@@ -60,6 +63,7 @@
     });
 
     //// BONUS stuff
+    /*
     // Display Axes
     var axesView = new ROS3D.Axes();
     var axesScene = new ROS3D.SceneNode({
@@ -68,13 +72,39 @@
       object : axesView
     });
     viewer.scene.add(axesScene);
+
+
+    
+    // attempt to call service for marker stuff
+    var resetInitClient = new ROSLIB.Service({
+      ros : ros,
+      name : '/baxter_interactive/tunneled/get_init',
+      serviceType : 'interactive_marker_proxy/GetInit'
+    });
+    
+    var request = new ROSLIB.ServiceRequest({
+      
+    });
+
+    resetInitClient.callService(request, function(result) {
+      console.log('Result for service call on ' + resetInitClient.name + ': ' + result.sum);
+    });
+    */
   }
 </script>
 </head>
 
 <body onload="init()">
-  <h1>Simple Interactive Marker Example</h1>
-  <p>Run the following commands in the terminal then refresh this page.</p>
+  <p><a href="../">Up...</a></p>
+  <h1>Baxter Interactive Example</h1>
+  <p>Baxter Instructions (live target) - Run the following commands in the terminal then refresh this page.</p>
+  <ol>
+    <li><tt>roslaunch baxter_endpoint interactive_endpoint.launch</tt></li>
+    <li><tt>rosrun interactive_marker_proxy proxy topic_ns:=/baxter_interactive
+        target_frame:=/base</tt></li>
+  </ol>
+  <div style="font-size:50%;">
+  <p>Original Instructions - Run the following commands in the terminal then refresh this page.</p>
   <ol>
     <li><tt>roscore</tt></li>
     <li><tt>rosrun interactive_marker_tutorials basic_controls</tt></li>
@@ -83,6 +113,7 @@
     <li><tt>rosrun tf2_web_republisher tf2_web_republisher</tt></li>
     <li><tt>roslaunch rosbridge_server rosbridge_websocket.launch</tt></li>
   </ol>
+  </div>
   <div id="markers"></div>
 </body>
 </html>
