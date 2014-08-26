@@ -17,7 +17,7 @@
     // Connect to ROS.
     var ros = new ROSLIB.Ros({
       url : 'ws://localhost:9090'
-      //url : 'ws://p99:9090'
+      //url : 'ws://' + location.hostname +':9090'
     });
 
     // Create the main viewer.
@@ -47,7 +47,9 @@
       //path : 'http://resources.robotwebtools.org/',
       //path : './resources/',
       //path : './../../../../dev/src/baxter_common/',
-      path : './',
+      //path : './',
+      //path : '/baxter_common/',
+      path : '/ros/',
       //path : 'http://p26:80/',
       rootObject : viewer.scene
     });
