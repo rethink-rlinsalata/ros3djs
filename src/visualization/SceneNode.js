@@ -17,8 +17,8 @@
 ROS3D.SceneNode = function(options) {
   options = options || {};
   var that = this;
-  var tfClient = options.tfClient || null;
-  var frameID = options.frameID;
+  this.tfClient = options.tfClient || null;
+  this.frameID = options.frameID;
   var object = options.object;
   this.pose = options.pose || new ROSLIB.Pose();
 
@@ -31,9 +31,11 @@ ROS3D.SceneNode = function(options) {
   // set the inital pose
   this.updatePose(this.pose);
 
+  this.tfCallback = function(tf) { that.transformPose(tf);};
+
   // listen for TF updates
-  if (tfClient) {
-      tfClient.subscribe(frameID, function(tf) { that.transformPose(tf);} );
+  if (this.tfClient) {
+      this.tfClient.subscribe(this.frameID, this.tfCallback );
   }
 
 };
@@ -72,9 +74,8 @@ ROS3D.SceneNode.prototype.transformPose = function(transform) {
  */
 ROS3D.SceneNode.prototype.removeTF = function() {
   if (this.tfClient) {
-    this.tfClient.unsubscribe(this.frameID, this.transformPose);
+    this.tfClient.unsubscribe(this.frameID, this.tfCallback);
   }
-  this.tfCallback = null;
 };
 
 /**
